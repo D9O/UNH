@@ -17,7 +17,6 @@ def Binary_Search(low, hi, counter):
     return False
   counter += 1
   half = (hi + low) // 2
-  no_answer = True
   if Get_Answer("Is the number {}".format(half)):
     print("Your secret number is {}".format(half))
     print("It took me {} guesses".format(counter))
