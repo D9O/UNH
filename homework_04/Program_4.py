@@ -73,11 +73,22 @@ def Make_Char():
     return chars[uuid.uuid4().int % 61]
   except:
     sys.exit("something went horribly wrong in Make_Char().")
+    
+def Make_Shorty():
+  sh_url = ""
+  while len(sh_url) < 7:
+    sh_url += Make_Char()
+    for dw in dirty_words:
+      if dw in sh_url:
+        sh_url = ""
+        print(f"Removed dirty word >{dw}<")
+  return sh_url
   
 if __name__ == "__main__":
   short_map = {}
   url_map = {}
-  dirty_words = {"set", "of", "unacceptable", "words", "here"} #don't want to end up on
+  dirty_words = {"set", "of", "unacceptable", "words", "here", "A" ,"a", "X"
+                 "b", "c", "G", "Z", "1", "2", "T"} #don't want to end up on
                                                                #reddit/fb with a bad word
   while True:
     url_inp = input("What is the URL ([q] to exit)? ").lower()
@@ -87,52 +98,50 @@ if __name__ == "__main__":
     if url_inp in url_map.keys():
       print(f"This URL is already mapped to {url_map[url_inp]}.")
     else:
-      sh_url = ""  
+      sh_url = ""
       while True:
-        for i in range(0, 7):
-          sh_url += Make_Char()
-        if sh_url in dirty_words:
-          continue
-        if sh_url in short_map.keys():
-          continue
-        break
+        sh_url = Make_Shorty()
+        if sh_url not in short_map.keys(): break
+
       short_map[sh_url] = url_inp
       url_map[url_inp] = sh_url
       print(f"ENTERED shorty.com/{sh_url} <==> {url_inp}")
       pp.pprint(short_map)
-      pp.pprint(url_map)
+      #pp.pprint(url_map)
 
 '''
-EXAMPLE OUTPUT:
-andyd@AndyDs-MacBook-Pro homework_04 % python3 Program_4.py
+andyd@AndyDs-MacBook-Pro GITHUB % python3 homework_04/Program_4.py
 What is the URL ([q] to exit)? www.cnn.com
-ENTERED shorty.com/ePW3Sxa <==> www.cnn.com
-{'ePW3Sxa': 'www.cnn.com'}
-{'www.cnn.com': 'ePW3Sxa'}
-What is the URL ([q] to exit)? www.cnn.com
-This URL is already mapped to ePW3Sxa.
-What is the URL ([q] to exit)? www.abc.com
-ENTERED shorty.com/0u0l98X <==> www.abc.com
-{'0u0l98X': 'www.abc.com', 'ePW3Sxa': 'www.cnn.com'}
-{'www.abc.com': '0u0l98X', 'www.cnn.com': 'ePW3Sxa'}
-What is the URL ([q] to exit)? www.lemmyishardrock.com
-ENTERED shorty.com/ySn5n75 <==> www.lemmyishardrock.com
-{'0u0l98X': 'www.abc.com',
- 'ePW3Sxa': 'www.cnn.com',
- 'ySn5n75': 'www.lemmyishardrock.com'}
-{'www.abc.com': '0u0l98X',
- 'www.cnn.com': 'ePW3Sxa',
- 'www.lemmyishardrock.com': 'ySn5n75'}
-What is the URL ([q] to exit)? www.mango.com
-ENTERED shorty.com/9eCzlJY <==> www.mango.com
-{'0u0l98X': 'www.abc.com',
- '9eCzlJY': 'www.mango.com',
- 'ePW3Sxa': 'www.cnn.com',
- 'ySn5n75': 'www.lemmyishardrock.com'}
-{'www.abc.com': '0u0l98X',
- 'www.cnn.com': 'ePW3Sxa',
- 'www.lemmyishardrock.com': 'ySn5n75',
- 'www.mango.com': '9eCzlJY'}
+ENTERED shorty.com/mPR4tju <==> www.cnn.com
+{'mPR4tju': 'www.cnn.com'}
+What is the URL ([q] to exit)? www.henry.com
+Removed dirty word >a<
+Removed dirty word >a<
+ENTERED shorty.com/BspQXsm <==> www.henry.com
+{'BspQXsm': 'www.henry.com', 'mPR4tju': 'www.cnn.com'}
+What is the URL ([q] to exit)? www.nadia.com
+ENTERED shorty.com/NJhoQyy <==> www.nadia.com
+{'BspQXsm': 'www.henry.com',
+ 'NJhoQyy': 'www.nadia.com',
+ 'mPR4tju': 'www.cnn.com'}
+What is the URL ([q] to exit)? www.sahana.com
+Removed dirty word >a<
+Removed dirty word >T<
+Removed dirty word >T<
+Removed dirty word >c<
+ENTERED shorty.com/pSNDEyf <==> www.sahana.com
+{'BspQXsm': 'www.henry.com',
+ 'NJhoQyy': 'www.nadia.com',
+ 'mPR4tju': 'www.cnn.com',
+ 'pSNDEyf': 'www.sahana.com'}
+What is the URL ([q] to exit)? www.paras.com
+Removed dirty word >A<
+ENTERED shorty.com/Xz68lSu <==> www.paras.com
+{'BspQXsm': 'www.henry.com',
+ 'NJhoQyy': 'www.nadia.com',
+ 'Xz68lSu': 'www.paras.com',
+ 'mPR4tju': 'www.cnn.com',
+ 'pSNDEyf': 'www.sahana.com'}
 What is the URL ([q] to exit)? q
 goodbye.
 '''    
