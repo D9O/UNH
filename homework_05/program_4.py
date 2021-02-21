@@ -58,8 +58,8 @@ def Make_Key(pw):
        iterations=100000,)
   return(base64.urlsafe_b64encode(kdf.derive(pw)))
   
-def Get_PW(create_new=False):
-  if create_new:
+def Get_PW(already_made=False):
+  if already_made:
     pw = input("Enter Password >")
     return Make_Key(pw.encode("ascii"))
   while 1:
